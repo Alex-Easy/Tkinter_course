@@ -1,5 +1,3 @@
-from fileinput import filename
-from logging import LoggerAdapter
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import filedialog
