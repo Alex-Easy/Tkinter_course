@@ -24,6 +24,71 @@ c = conn.cursor()
 # zipcode integer
 # )""")
 
+# Create edit function to update a record
+
+def edit():
+    editor = Tk()
+    editor.title('Update a record')
+    editor.geometry("400x400")
+
+    # Create db or connect to one
+    conn = sqlite3.connect('address_book.db')
+    # Create cursor
+    c = conn.cursor()
+
+    record_id = delete_box.get()
+    # Query the database
+    c.execute("SELECT * FROM addresses WHERE oid = " + record_id)
+    records = c.fetchall()
+    # print(records)
+
+    # print_records = ''
+    # for record in records:
+    #     print_records += str(record[0]) + " " + str(record[1]) + " " + "\t" + str(record[6]) + "\n"
+
+    # Create text boxes
+
+    f_name_editor = Entry(editor, width=30)
+    f_name_editor.grid(row=0, column=1, padx=20, pady=(10, 0))
+    l_name_editor = Entry(editor, width=30)
+    l_name_editor.grid(row=1, column=1)
+    address_editor = Entry(editor, width=30)
+    address_editor.grid(row=2, column=1)
+    city_editor = Entry(editor, width=30)
+    city_editor.grid(row=3, column=1)
+    state_editor = Entry(editor, width=30)
+    state_editor.grid(row=4, column=1)
+    zipcode_editor = Entry(editor, width=30)
+    zipcode_editor.grid(row=5, column=1)
+
+    # Create text box Labels
+
+    f_name_label = Label(editor, text="First name")
+    f_name_label.grid(row=0, column=0, pady=(10, 0))
+    l_name_label = Label(editor, text="Last name")
+    l_name_label.grid(row=1, column=0)
+    address_label = Label(editor, text="Address name")
+    address_label.grid(row=2, column=0)
+    city_label = Label(editor, text="City name")
+    city_label.grid(row=3, column=0)
+    state_label = Label(editor, text="State name")
+    state_label.grid(row=4, column=0)
+    zipcode_label = Label(editor, text="Zipcode name")
+    zipcode_label.grid(row=5, column=0)
+
+    for record in records:
+        f_name_editor.insert(0, record[0])
+        l_name_editor.insert(0, record[1])
+        address_editor.insert(0, record[2])
+        city_editor.insert(0, record[3])
+        state_editor.insert(0, record[4])
+        zipcode_editor.insert(0, record[5])
+
+    # Create a save button to save edited button
+    edit_btn = Button(editor, text="Save record", command=edit)
+    edit_btn.grid(row=6, column=0, columnspan=2, pady=10, padx=10, ipadx=120)
+
+
 # Create function to delete a record
 
 def delete():
@@ -90,7 +155,7 @@ def query():
         print_records += str(record[0]) + " " + str(record[1]) + " " + "\t" + str(record[6]) + "\n"
 
     query_label = Label(root, text=print_records)
-    query_label.grid(row=11, column=0, columnspan=2)
+    query_label.grid(row=12, column=0, columnspan=2)
 
     # Commit changes
     conn.commit()
@@ -130,7 +195,7 @@ state_label = Label(root, text="State name")
 state_label.grid(row=4, column=0)
 zipcode_label = Label(root, text="Zipcode name")
 zipcode_label.grid(row=5, column=0)
-delete_box_label = Label(root, text="Delete ID")
+delete_box_label = Label(root, text="Select ID")
 delete_box_label.grid(row=9, column=0, pady=5)
 
 # Create submit button
@@ -145,6 +210,10 @@ query_btn.grid(row=7, column=0, columnspan=2, pady=10, padx=10, ipadx=115)
 # Create a delete button
 delete_btn = Button(root, text="Delete record", command=delete)
 delete_btn.grid(row=10, column=0, columnspan=2, pady=10, padx=10, ipadx=115)
+
+# Create an update button
+edit_btn = Button(root, text="Edit record", command=edit)
+edit_btn.grid(row=11, column=0, columnspan=2, pady=10, padx=10, ipadx=120)
 
 # Commit changes
 conn.commit()
